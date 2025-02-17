@@ -8,13 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Views\Shared\NewFolder1\**" />
+    <Compile Remove="wwwroot\images\NewFolder\**" />
     <Content Remove="Views\Shared\NewFolder1\**" />
+    <Content Remove="wwwroot\images\NewFolder\**" />
     <EmbeddedResource Remove="Views\Shared\NewFolder1\**" />
+    <EmbeddedResource Remove="wwwroot\images\NewFolder\**" />
     <None Remove="Views\Shared\NewFolder1\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\NewFolder\" />
+    <None Remove="wwwroot\images\NewFolder\**" />
   </ItemGroup>
 
 </Project>
