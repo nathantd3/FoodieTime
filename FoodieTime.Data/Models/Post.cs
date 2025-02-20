@@ -5,7 +5,7 @@ namespace FoodieTime.Data.Models
     public class Post
     {
         [Key]
-        public int PostId { get; set; }
+        public int Id { get; set; }
 
         public string Content { get; set; }
 
