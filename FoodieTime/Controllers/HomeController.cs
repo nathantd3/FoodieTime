@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using FoodieTime.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodieTime.Controllers

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using FoodieTime.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodieTime.Data
 {
@@ -8,5 +10,8 @@ namespace FoodieTime.Data
         {
             
         }
+
+        public DbSet<Post> Posts { get; set; }
+       
     }
 }
