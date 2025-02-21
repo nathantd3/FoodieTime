@@ -13,8 +13,20 @@ namespace FoodieTime.Data.Models
 
         public int NrOfReports { get; set; }
 
+        public int Rating { get; set; }
+
+        public required string Restaurant { get; set; }
+
+        public required string Dish {  get; set; }
+
         public DateTime DateCreated { get; set; }
 
         public DateTime DateUpdated { get; set; }
+
+        //Foreign Key
+        public int UserId { get; set; }
+
+        //Navigation properties
+        public User User { get; set; }
     }
 }
