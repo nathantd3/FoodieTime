@@ -21,7 +21,7 @@ namespace FoodieTime.Controllers
                 .Include(n => n.User)
                 .ToListAsync();
                 
-            return View();
+            return View(allPosts);
         }
 
     }
