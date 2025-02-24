@@ -4,6 +4,8 @@
     {
         public string Content { get; set; }
 
+        public IFormFile Image { get; set; }
+
         public string Restaurant { get; set; }
 
         public string Dish { get; set; }

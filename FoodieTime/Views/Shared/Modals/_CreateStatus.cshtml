@@ -10,7 +10,7 @@
                 </svg>
             </button>
         </div>
-        <form asp-controller="Home" asp-action="CreatePost">
+        <form asp-controller="Home" asp-action="CreatePost" enctype="multipart/form-data">
             
             <div class="flex space-x-3 mt-3 p-2">
                 <textarea class="w-1/2 resize-none ring ring-gray-500 !text-black placeholder:!text-black !bg-white !font-normal !text-xl p-2"
@@ -33,7 +33,6 @@
             </div>
 
             <div class="flex items-center gap-2 justify-center py-3">
-                <!-- Bind rating input to Model.Rating -->
                 <input type="hidden" asp-for="@Model.Rating" id="rating" value="0">
 
                 <div class="flex space-x-2 text-yellow-400 text-3xl cursor-pointer">
@@ -91,3 +90,27 @@
         </form>
 	</div>
 </div>
+
+<script>
+    document.getElementById('imageUploadBtn').addEventListener('click', () => {
+        document.getElementById('imageUpload').click();
+    });
+
+    document.getElementById('imageUpload').addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        const imagePreview = document.getElementById('imagePreview');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+
+        if (file) {
+            const reader = new FileReader();
+            imagePreviewContainer.classList.remove('hidden');
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        } else {
+            imagePreviewContainer.classList.add('hidden');
+        }
+    });
+
+</script>

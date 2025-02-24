@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Compile Remove="Views\Shared\NewFolder1\**" />
-    <Compile Remove="wwwroot\images\NewFolder\**" />
     <Content Remove="Views\Shared\NewFolder1\**" />
-    <Content Remove="wwwroot\images\NewFolder\**" />
     <EmbeddedResource Remove="Views\Shared\NewFolder1\**" />
-    <EmbeddedResource Remove="wwwroot\images\NewFolder\**" />
     <None Remove="Views\Shared\NewFolder1\**" />
-    <None Remove="wwwroot\images\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +24,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FoodieTime.Data\FoodieTime.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\uploaded\" />
   </ItemGroup>
 
 </Project>
