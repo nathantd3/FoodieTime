@@ -1,20 +1,78 @@
-﻿<div class="hidden lg:p-20" id="create-status" uk-modal="">
+﻿@model PostVM;
+
+<div class="hidden lg:p-20" id="create-status" uk-modal="">
 	<div class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadowxl\:duration-500 roundeded-lg md:w-[520px] w-full">
         <div class="text-center py-4 border-b mb-0">
-            <h2 class="text-sm font-medium text-black">Create Status</h2>
+            <h2 class="text-sm font-medium text-black">Create Rating</h2>
             <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
-        <form>
-            <div class="space-y-5 mt-3 p-2">
-                <textarea class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl"
-                name="content"
-                rows="2"
-                placeholder="What do you have in mind?"></textarea>
+        <form asp-controller="Home" asp-action="CreatePost">
+            
+            <div class="flex space-x-3 mt-3 p-2">
+                <textarea class="w-1/2 resize-none ring ring-gray-500 !text-black placeholder:!text-black !bg-white !font-normal !text-xl p-2"
+                          name="Restaurant"
+                          asp-for="@Model.Restaurant"
+                          rows="1"
+                          placeholder="Restaurant"></textarea>
+                <textarea class="w-1/2 resize-none ring ring-gray-500 !text-black placeholder:!text-black !bg-white !font-normal !text-xl p-2"
+                          name="Dish"
+                          asp-for="@Model.Dish"
+                          rows="1"
+                          placeholder="Dish"></textarea>
             </div>
+            <div class="space-y-5 mt-3 p-2">
+                <textarea class="w-full ring ring-gray-500 !text-black placeholder:!text-black !bg-white !font-normal !text-xl"
+                          name="content"
+                          asp-for="@Model.Content"
+                          rows="2"
+                          placeholder="Create a rating!"></textarea>
+            </div>
+
+            <div class="flex items-center gap-2 justify-center py-3">
+                <!-- Bind rating input to Model.Rating -->
+                <input type="hidden" asp-for="@Model.Rating" id="rating" value="0">
+
+                <div class="flex space-x-2 text-yellow-400 text-3xl cursor-pointer">
+                    <span class="star" data-value="1">★</span>
+                    <span class="star" data-value="2">★</span>
+                    <span class="star" data-value="3">★</span>
+                    <span class="star" data-value="4">★</span>
+                    <span class="star" data-value="5">★</span>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const stars = document.querySelectorAll(".star");
+                    const ratingInput = document.getElementById("rating");
+
+                    stars.forEach(star => {
+                        star.addEventListener("mouseover", function () {
+                            highlightStars(this.dataset.value);
+                        });
+
+                        star.addEventListener("click", function () {
+                            ratingInput.value = this.dataset.value;
+                            highlightStars(this.dataset.value);
+                        });
+
+                        star.addEventListener("mouseout", function () {
+                            highlightStars(ratingInput.value);
+                        });
+                    });
+
+                    function highlightStars(value) {
+                        stars.forEach(star => {
+                            star.style.color = star.dataset.value <= value ? "#facc15" : "#d1d5db";
+                        });
+                    }
+                });
+            </script>
+
             <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
                 <input id="imageUpload" type="file" class="hidden" name="image" accept="image/png, image/jpeg" />
 
