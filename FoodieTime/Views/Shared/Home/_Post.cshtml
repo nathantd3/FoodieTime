@@ -98,24 +98,83 @@
                     )"></ion-icon>
                 </button>
             </form>
-            
+
             <a href="#">@Model.Likes.Count</a>
         </div>
         <div class="flex items-center gap-3">
             <a class="button-icon text-blue-500">
                 <ion-icon class="text-lg" name="chatbubble-ellipses-outline"></ion-icon>
             </a>
-            <a href="#">5</a>
+            <a href="#">@Model.Comments.Count</a>
         </div>
         <div class="ml-auto"></div>
-        <div>
-            <a class="button-icon text-yellow-500 ml-auto">
-                <ion-icon class="text-lg" name="bookmark-outline"></ion-icon>
-            </a>
+        <div class="flex items-center gap-1.5">
+            <form asp-controller="Home" asp-action="TogglePostFavorite">
+                <input type="hidden" name="postId" value="@Model.Id"/>
+                <button type="submit" class="button-icon text-yellow-500 ml-auto @(Model.Favorites.Any(n => n.UserId == 1) ? "text-yellow-500 bt-yellow-100":"") ">
+                    <ion-icon class="text-lg" name="@(Model.Favorites.Any(n => n.UserId == 1) ? "bookmark":"bookmark-outline")"></ion-icon>
+                </button>
+            </form>
+            <a href="#">@Model.Favorites.Count</a>
         </div>
     </div>
 
     <div>
+        <div class="p-2.5 border-t border-gray-100 font-normal space-y-3 relative">
+            @foreach(var comment in Model.Comments.OrderByDescending(n => n.DateCreated).Take(3))
+            {
+                TimeSpan commentTimeSpanSincePosted = DateTime.UtcNow.Subtract(comment.DateCreated);
+                string commentDisplayTime = "";
+
+                if (commentTimeSpanSincePosted.TotalDays == 1)
+                    commentDisplayTime = $"{commentTimeSpanSincePosted.Days} day ago";
+                else if (commentTimeSpanSincePosted.TotalDays > 1)
+                    commentDisplayTime = $"{commentTimeSpanSincePosted.Days} days ago";
+                else if (commentTimeSpanSincePosted.TotalHours == 1)
+                    commentDisplayTime = $"{commentTimeSpanSincePosted.Hours} hour ago";
+                else if (commentTimeSpanSincePosted.TotalHours > 1)
+                    commentDisplayTime = $"{commentTimeSpanSincePosted.Hours} hours ago";
+                else if (commentTimeSpanSincePosted.TotalMinutes == 1)
+                    commentDisplayTime = $"{commentTimeSpanSincePosted.Minutes} minute ago";
+                else if (commentTimeSpanSincePosted.TotalMinutes > 1)
+                    commentDisplayTime = $"{commentTimeSpanSincePosted.Minutes} minutes ago";
+                else
+                    commentDisplayTime = "Just now";
+
+                <div class="flex items-start gap-3 relative">
+                    <a>
+                        <img src="@(comment.User.ProfilePictureUrl ?? "~/images/avatar/user.png")" class="w-6 h-6 mt-1 rounded-full" />
+                    </a>
+                    <div class="flex-1">
+                        <div class="flex justify-content-between">
+                            <a class="text-black font-medium inline-block flex-grow">
+                                @comment.User.FullName
+                            </a>
+                            <small>@commentDisplayTime</small>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <p class="mt-0.5">@comment.Content</p>
+                            <form asp-asp-controller="Home" asp-action="RemovePostComment">
+                                <input type="hidden" name="commentId" value="@comment.Id" />
+                                <button type="submit" class="text-red-500 text-xs ml-2">
+                                    <ion-icon name="trash-outline" title=""></ion-icon>
+                                </button>
+                            </form>
+                        </div>
+
+
+                        
+                    </div>
+                </div>
+            }
+            @if(Model.Comments.Count >= 3)
+            {
+                <div class="p-1.5">
+                    <a>Show all comments</a>
+                    
+                </div>
+            }
+        </div>
         <form asp-controller="Home" asp-action="AddPostComment">
             <div class="sm:px-4 sm:py-3 p-2.5 border-t border-gray-100 flex items-center gap-1">
                 <img src="~/images/avatar/user.png" class="w-6 h-6 rounded-full" />
