@@ -30,5 +30,6 @@ namespace FoodieTime.Data.Models
         public User User { get; set; }
 
         public ICollection<Like> Likes { get; set; } = new List<Like>();
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
