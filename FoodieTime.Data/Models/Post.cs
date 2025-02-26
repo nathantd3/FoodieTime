@@ -12,6 +12,7 @@ namespace FoodieTime.Data.Models
         public string? ImageUrl { get; set; }
 
         public int NrOfReports { get; set; }
+        public bool IsPrivate {  get; set; }
 
         public int Rating { get; set; }
 
