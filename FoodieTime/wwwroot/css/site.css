@@ -19,7 +19,7 @@ form > button.icon-link, button.delete-post-btn {
     width: 100%;
 }
 
-    form > button.icon-link > ion-icon {
-    /*, button.delete-post-btn > ion-icon {*/
-    margin-right: 8px;
+    form > button.icon-link > ion-icon, 
+        button.delete-post-btn > ion-icon {
+        margin-right: 8px;
     }

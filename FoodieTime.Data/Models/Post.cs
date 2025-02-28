@@ -23,6 +23,7 @@ namespace FoodieTime.Data.Models
         public DateTime DateCreated { get; set; }
 
         public DateTime DateUpdated { get; set; }
+        public bool IsDeleted { get; set; }
 
         //Foreign Key
         public int UserId { get; set; }

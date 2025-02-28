@@ -15,6 +15,8 @@ namespace FoodieTime.Data.Models
 
         public string? ProfilePictureUrl { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         //Navigation properties
         public ICollection<Post> Posts { get; set; } = new List<Post>();
 
