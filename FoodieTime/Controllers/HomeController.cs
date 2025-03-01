@@ -58,7 +58,7 @@ namespace FoodieTime.Controllers
                 string rootFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                 if(post.Image.ContentType.Contains("image"))
                 {
-                    string rootFolderPathImages = Path.Combine(rootFolderPath, "images/uploaded");
+                    string rootFolderPathImages = Path.Combine(rootFolderPath, "images/posts");
                     Directory.CreateDirectory(rootFolderPathImages);
 
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(post.Image.FileName);
@@ -67,7 +67,7 @@ namespace FoodieTime.Controllers
                     using (var stream = new FileStream(filePath, FileMode.Create))
                         await post.Image.CopyToAsync(stream);
 
-                    newPost.ImageUrl = "/images/uploaded/" + fileName;
+                    newPost.ImageUrl = "/images/posts/" + fileName;
                 }
             }
 
