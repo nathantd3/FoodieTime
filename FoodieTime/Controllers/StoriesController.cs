@@ -2,6 +2,7 @@
 using FoodieTime.Data.Models;
 using FoodieTime.ViewModels.Stories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodieTime.Controllers
 {
@@ -12,9 +13,10 @@ namespace FoodieTime.Controllers
         { 
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var allStories = await _context.Stories.Include(s => s.User).ToListAsync();
+            return View(allStories);
         }
 
         [HttpPost]
