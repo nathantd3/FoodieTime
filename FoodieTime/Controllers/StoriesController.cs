@@ -1,5 +1,7 @@
 ﻿using FoodieTime.Data;
+using FoodieTime.Data.Helpers.Enums;
 using FoodieTime.Data.Models;
+using FoodieTime.Data.Services;
 using FoodieTime.ViewModels.Stories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +10,12 @@ namespace FoodieTime.Controllers
 {
     public class StoriesController : Controller
     {
-        private readonly AppDbContext _context;
-        public StoriesController(AppDbContext context)
-        { 
-            _context = context;
+        private readonly IStoriesService _storiesService;
+        private readonly IFilesService _filesService;
+        public StoriesController(IStoriesService storiesService, IFilesService filesService)
+        {
+            _storiesService = storiesService;
+            _filesService = filesService;
         }
 
         [HttpPost]
@@ -19,32 +23,17 @@ namespace FoodieTime.Controllers
         {
             int loggedInUserId = 1;
 
+            var imageUploadPath = await _filesService.UploadImageAsync(storyVM.Image, ImageFileType.StoryImage);
+
             var newStory = new Story
             {
                 DateCreated = DateTime.UtcNow,
                 IsDeleted = false,
+                ImageUrl = imageUploadPath,
                 UserId = loggedInUserId,
             };
 
-            if (storyVM.Image != null && storyVM.Image.Length > 0)
-            {
-                string rootFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                if (storyVM.Image.ContentType.Contains("image"))
-                {
-                    string rootFolderPathImages = Path.Combine(rootFolderPath, "images/stories");
-                    Directory.CreateDirectory(rootFolderPathImages);
-
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(storyVM.Image.FileName);
-                    string filePath = Path.Combine(rootFolderPathImages, fileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                        await storyVM.Image.CopyToAsync(stream);
-
-                    newStory.ImageUrl = "/images/stories/" + fileName;
-                }
-            }
-            await _context.Stories.AddAsync(newStory);
-            await _context.SaveChangesAsync();
+            await _storiesService.CreateStoryAsync(newStory);
 
             return RedirectToAction("Index", "Home");
         }
