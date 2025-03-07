@@ -32,6 +32,25 @@ namespace FoodieTime.Data.Services
             return allPosts; 
         }
 
+        public async Task<List<Post>> GetAllFavoritedPostsAsync(int loggedInUserId)
+        {
+
+            var allFavoritedPosts = await _context.Favorites
+                .Include(f => f.Post)
+                .Include(f => f.Post.User)
+                .Include(f => f.Post.Comments)
+                    .ThenInclude(c => c.User)
+                .Include(f => f.Post.Likes)
+                .Include(f => f.Post.Favorites)
+                .Where(n => n.UserId == loggedInUserId &&
+                    !n.Post.IsDeleted)
+                .OrderByDescending(f => f.DateCreated)
+                .Select(n => n.Post)
+                .ToListAsync();
+
+            return allFavoritedPosts;
+        }
+
         public async Task AddPostCommentAsync(Comment comment)
         {
             await _context.Comments.AddAsync(comment);
@@ -87,7 +106,8 @@ namespace FoodieTime.Data.Services
                 var newFavorite = new Favorite()
                 {
                     PostId = postId,
-                    UserId = userId
+                    UserId = userId,
+                    DateCreated = DateTime.UtcNow,
                 };
                 await _context.Favorites.AddAsync(newFavorite);
                 await _context.SaveChangesAsync();
