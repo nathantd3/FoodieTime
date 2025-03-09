@@ -23,6 +23,7 @@
     bool isLiked = Model.Likes.Any(n => n.UserId == 1);
     bool isPrivate = Model.IsPrivate == true && Model.UserId == 1;
     string defaultUserPicture = "~/images/avatar/user.png";
+    bool showAllComments = ViewData["ShowAllComment"] as bool? ?? false;
 }
 
 
@@ -127,7 +128,9 @@
 
     <div>
         <div class="p-2.5 border-t border-gray-100 font-normal space-y-3 relative">
-            @foreach(var comment in Model.Comments.OrderByDescending(n => n.DateCreated).Take(3))
+            @foreach (var comment in showAllComments ? 
+            Model.Comments.OrderByDescending(n => n.DateCreated) :
+            Model.Comments.OrderByDescending(n => n.DateCreated).Take(3))
             {
                 TimeSpan commentTimeSpanSincePosted = DateTime.UtcNow.Subtract(comment.DateCreated);
                 string commentDisplayTime = "";
@@ -173,7 +176,7 @@
                     </div>
                 </div>
             }
-            @if(Model.Comments.Count >= 3)
+            @if(Model.Comments.Count > 3 && !showAllComments)
             {
                 <div class="p-1.5">
                     <a asp-controller="Home" asp-action="Details" asp-route-postId="@Model.Id">Show all comments</a> 
