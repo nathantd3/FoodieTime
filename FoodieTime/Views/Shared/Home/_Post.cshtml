@@ -22,104 +22,106 @@
     bool isFavorited = Model.Favorites.Any(n => n.UserId == 1);
     bool isLiked = Model.Likes.Any(n => n.UserId == 1);
     bool isPrivate = Model.IsPrivate == true && Model.UserId == 1;
+    string defaultUserPicture = "~/images/avatar/user.png";
 }
 
 
 
 <div class="bg-white rounded-xl shadow-sm text-sm font-medium border1">
+
+    @* Post heading *@
     <div class="flex gap-3 sm:p-4 p-2.5 text-sm font-medium">
         <a>
-            <img src="@(Model.User.ProfilePictureUrl ?? "~/images/avatar/user.png")" class="w-9 h-9 rounded-full" />
+            <img src="@(!string.IsNullOrEmpty(Model.User.ProfilePictureUrl) ? Url.Content("~/"+Model.User.ProfilePictureUrl) : defaultUserPicture)" class="w-9 h-9 rounded-full" />
         </a>
         <div class="flex-1">
             <a>
                 <h4 class="text-black">@Model.User.FullName</h4>
-                <div class="text-xs text-gray-500/80">@displayTime</div>
-            </a>
-            <a>
-                <div class="text-xs text-black">@Model.Restaurant - @Model.Dish</div>
-                <div class="text-xs text-gray-500/80">
-                    @for (int i = 1; i <= 5; i++)
-                    {
-                        if (i <= Model.Rating)
-                        {
-                            <span class="text-yellow-500">&#9733;</span> @* Filled Star *@
-                        }
-                        else
-                        {
-                            <span class="text-gray-300">&#9734;</span> @* Empty Star *@
-                        }
-                    }
-                </div>
+                <div class="text-xs text-gray-500/80" title="@Model.DateCreated.ToString("MM/dd/yyyy HH:mm")"> @displayTime </div>
             </a>
         </div>
+
         <div class="-mr-1">
-            <button type="button" class="button-icon w-8 h-8">
-                <ion-icon class="text-xl" name="ellipsis-horizontal"></ion-icon>
-            </button>
+            <button type="button" class="button-icon w-8 h-8"> <ion-icon class="text-xl" name="ellipsis-horizontal"></ion-icon> </button>
             <div class="w-[245px] post-options-dropdown" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click">
-                @if(Model.UserId == 1)
+
+                @if (Model.UserId == 1)
                 {
-                    <form asp-asp-controller="Home" asp-action="TogglePostVisibility">
+                    <form asp-controller="Home" asp-action="TogglePostVisibility">
                         <input type="hidden" name="postId" value="@Model.Id" />
                         <button type="submit" class="hover:!bg-red-50 icon-link">
-                            <ion-icon class="text-xl text-yellow-500 shrink-0" name="@(!isPrivate ? "lock-closed-outline" : "lock-open-outline")"></ion-icon>Set as @(!isPrivate ? "Private" :
-                        "Public")
+                            <ion-icon name="@(isPrivate ? "lock-open-outline" : "lock-closed-outline")"></ion-icon>  Set as @(isPrivate ? "public" : "private")
                         </button>
                     </form>
                     <hr>
+
                     <button type="button" onclick="openPostDeleteConfirmation('@Model.Id')" class="text-red-400 hover:!bg-red-50 delete-post-btn">
-                        <ion-icon class="text-xl text-red-500 shrink-0" name="trash-bin-outline"></ion-icon>Delete Post
+                        <ion-icon name="trash-bin-outline"></ion-icon>  Delete Post
                     </button>
                 }
+
                 
+
             </div>
         </div>
     </div>
-    <a>
-        <div class="px-sm-4 p-2.5 pt-0 w-full">
 
-            <p class="font-normal">@Model.Content</p>
+    @* Post content *@
+    <a asp-controller="Home" asp-action="Details" asp-route-postId="@Model.Id">
+        <div class="sm:px-4 p-2.5 pt-0 w-full">
+            <p class="font-normal">
+                @Model.Content
+            </p>
         </div>
     </a>
 
     @if (!string.IsNullOrEmpty(Model.ImageUrl))
     {
-        <a>
-            <div class="relative w-full lg:h-96 h-full sm:px-4">
+        <a asp-controller="Home" asp-action="Details" asp-route-postId="@Model.Id">
+            <div class="relative w-full h-full">
                 <img src="@Model.ImageUrl" class="sm:rounded-lg w-full h-full object-cover" />
             </div>
         </a>
     }
 
 
-    <div class="p-sm-4 p-2.5 flex items-center gap-4 text-xs font-semibold">
+    @* Icons *@
+    <div class="sm:p-4 p-2.5 flex items-center gap-4 text-xs font-semibold">
+
         <div class="flex items-center gap-2.5">
             <form asp-controller="Home" asp-action="TogglePostLike">
                 <input type="hidden" name="postId" value="@Model.Id" />
-                <button type="submit" class="button-icon text-red-500">
-                    <ion-icon class="text-lg" name="@(isLiked ? "heart" : "heart-outline"
-                    )"></ion-icon>
+                <button type="submit" class="button-icon @(isLiked ? "text-red-500 bg-red-100" : "")">
+                    <ion-icon class="text-lg"
+                              name="@(isLiked ? "heart" : "heart-outline")"></ion-icon>
                 </button>
             </form>
 
             <a href="#">@Model.Likes.Count</a>
         </div>
+
+
+
         <div class="flex items-center gap-3">
-            <a class="button-icon text-blue-500">
+            <a class="button-icon">
                 <ion-icon class="text-lg" name="chatbubble-ellipses-outline"></ion-icon>
             </a>
             <a href="#">@Model.Comments.Count</a>
         </div>
+
         <div class="ml-auto"></div>
-        <div class="flex items-center gap-1.5">
+
+        <div class="flex items-center gap-2">
             <form asp-controller="Home" asp-action="TogglePostFavorite">
-                <input type="hidden" name="postId" value="@Model.Id"/>
-                <button type="submit" class="button-icon text-yellow-500 ml-auto @(Model.Favorites.Any(n => n.UserId == 1) ? "text-yellow-500 bt-yellow-100":"") ">
+                <input type="hidden" name="postId" value="@Model.Id" />
+                <button type="submit" class="button-icon ml-auto @(isFavorited ? "text-orange-500 bt-orange-100":"")">
                     <ion-icon class="text-lg" name="@(isFavorited ? "bookmark":"bookmark-outline")"></ion-icon>
                 </button>
             </form>
-            <a href="#">@Model.Favorites.Count</a>
+            @if (Model.Favorites.Count > 0)
+            {
+                <a href="#">@Model.Favorites.Count</a>
+            }
         </div>
     </div>
 
@@ -147,7 +149,7 @@
 
                 <div class="flex items-start gap-3 relative">
                     <a>
-                        <img src="@(comment.User.ProfilePictureUrl ?? "~/images/avatar/user.png")" class="w-6 h-6 mt-1 rounded-full" />
+                        <img src="@(!string.IsNullOrEmpty(comment.User.ProfilePictureUrl) ? Url.Content("~/"+comment.User.ProfilePictureUrl) : defaultUserPicture)" class="w-9 h-9 rounded-full" />
                     </a>
                     <div class="flex-1">
                         <div class="flex justify-content-between">
@@ -174,8 +176,7 @@
             @if(Model.Comments.Count >= 3)
             {
                 <div class="p-1.5">
-                    <a>Show all comments</a>
-                    
+                    <a asp-controller="Home" asp-action="Details" asp-route-postId="@Model.Id">Show all comments</a> 
                 </div>
             }
         </div>

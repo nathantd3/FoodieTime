@@ -32,6 +32,12 @@ namespace FoodieTime.Controllers
             return View(allPosts);
         }
 
+        public async Task<IActionResult> Details(int postId)
+        {
+            var post = await _postsService.GetPostByIdAsync(postId);
+            return View(post);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreatePost(PostVM post)
         {
