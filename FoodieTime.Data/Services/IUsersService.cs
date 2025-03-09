@@ -10,5 +10,6 @@ namespace FoodieTime.Data.Services
     public interface IUsersService
     {
         Task<User> GetUser(int loggedInUserId);
+        Task UpdateUserProfilePicture(int userId, string profilePictureUrl);
     }
 }
