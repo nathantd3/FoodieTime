@@ -4,13 +4,12 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace FoodieTime.Data.Models
 {
-    public class User
+    public class User:IdentityUser<int>
     {
-        public int Id { get; set; }
-
         public string FullName { get; set; }
 
         public string? ProfilePictureUrl { get; set; }
