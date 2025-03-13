@@ -1,0 +1,42 @@
+﻿<div class="sm:flex">
+	<div class="relative w-full p-10 min-h-screen bg-white shadow-xl flex items-center pt-10 z-10">
+		<div class="w-full lg:max-w-sm mx-auto space-y-10">
+			<div id="logo" class="flex items-center">
+				<a class="flex items-center">
+					<img src="~/images/logo.png" class="w-14 md:block hidden" />
+					<span class="ml-2 text-4xl">FoodieTime</span>
+				</a>
+			</div>
+			<div>
+				<h2 class="text-2xl font-semibold mb-1.5">Sign in to your account</h2>
+				<p class="text-sm text-gray-700 font-normal">If you have not signed up yet. 
+					<a asp-controller="Authentication" asp-action="Register" class="text-blue-700">Register here!</a>
+				</p>
+			</div>
+			<form method="post" class="space-y-7 text-sm text-black font-medium">
+				<div>
+					<label for="email">Email Address</label>
+					<div class="mt-2.5">
+						<input id="email" name="email" type="email" placeholder="Email" required="" class="!w-full"/>
+					</div>
+				</div>
+				<div>
+					<label for="password">Password</label>
+					<div class="mt-2.5">
+						<input id="password" name="password" type="password" placeholder="Password" required="" class="!w-full" />
+					</div>
+				</div>
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-2.5">
+						<input id="rememberme" name="rememberme" type="checkbox" />
+						<label for="rememberme" class="font-normal">Remember me</label>
+					</div>
+					<a href="#" class="text-blue-700">Forgot Password</a>
+				</div>
+				<div>
+					<button type="submit" class="button bg-primary text-white w-full">Sign In</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
