@@ -1,1 +1,58 @@
-﻿<h1>Register View</h1>
+﻿@model RegisterVM
+
+<div class="sm:flex">
+	<div class="relative w-full p-10 min-h-screen bg-white shadow-xl flex items-center pt-10 z-10">
+		<div class="w-full lg:max-w-sm mx-auto space-y-10">
+			<div id="logo" class="flex items-center">
+				<a class="flex items-center">
+					<img src="~/images/logo.png" class="w-14 md:block hidden" />
+					<span class="ml-2 text-4xl">FoodieTime</span>
+				</a>
+			</div>
+			<div>
+					<h2 class="text-2xl font-semibold mb-1.5">Sign up to get started</h2>
+					<p class="text-sm text-gray-700 font-normal">
+						If you already have an account, 
+						<a asp-controller="Authentication" asp-action="Login" class="text-blue-700">login here!</a>
+					</p>
+				</div>
+				<form asp-controller="Authentication" asp-action="Register" method="post" class="space-y-7 text-sm text-black font-medium">
+					<div class="grid grid-cols-2 gap-4 gap-y-7">
+						<div>
+							<label asp-for="FirstName">First Name</label>
+							<div class="mt-2.5">
+								<input asp-for="FirstName" id="firstName" name="firstName" type="text" placeholder="First Name" required="" class="!w-full" />
+							</div>
+						</div>
+						<div>
+							<label asp-for="LastName">Last Name</label>
+							<div class="mt-2.5">
+								<input asp-for="LastName" id="lastName" name="lastName" type="text" placeholder="Last Name" required="" class="!w-full" />
+							</div>
+						</div>
+						<div class="col-span-2">
+							<label asp-for="Email">Email Address</label>
+							<div class="mt-2.5">
+								<input asp-for="Email" id="email" name="email" type="email" placeholder="Email" required="" class="!w-full" />
+							</div>
+						</div>
+						<div>
+							<label asp-for="Password">Password</label>
+							<div class="mt-2.5">
+								<input asp-for="Password" id="password" name="password" type="password" placeholder="Password" required="" class="!w-full" />
+							</div>
+						</div>
+						<div>
+							<label asp-for="ConfirmPassword">Confirm Password</label>
+							<div class="mt-2.5">
+								<input asp-for="ConfirmPassword" id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm Password" required="" class="!w-full" />
+							</div>
+						</div>
+						<div class="col-span-2">
+							<button type="submit" class="button bg-primary text-white w-full">Register</button>
+						</div>
+					</div>
+				</form>
+		</div>
+	</div>
+</div>
