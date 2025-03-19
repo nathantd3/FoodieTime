@@ -5,13 +5,13 @@ namespace FoodieTime.ViewModels.Authentication
     public class RegisterVM
     {
         [Required(ErrorMessage = "First Name is required")]
-        [StringLength(20, MinimumLength = 2, ErrorMessage = "First Name must be between two and 20 characters")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "First Name must only contain letters")]
-        public string FirstName {  get; set; }
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "First Name must be between 2 and 50 characters")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "First Name must contain only letters")]
+        public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Last Name is required")]
-        [StringLength(20, MinimumLength = 2, ErrorMessage = "Last Name must be between two and 20 characters")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Last Name must only contain letters")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "Last Name must be between 2 and 50 characters")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Last Name must contain only letters")]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
@@ -25,5 +25,4 @@ namespace FoodieTime.ViewModels.Authentication
         [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; }
     }
-
 }
